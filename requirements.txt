@@ -1,3 +1,6 @@
+setuptools>=68.0
+wheel
+build
 Flask==2.3.3
 python-dotenv==1.0.0
 SpeechRecognition==3.10.0

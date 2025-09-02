@@ -1,0 +1,33 @@
+# Python caches and environments
+venv/
+__pycache__/
+*.pyc
+
+# Environment/configuration
+.env
+
+# Large/binary indexes and caches (vectorstore, pickles)
+financial_vectorstore/
+*.pkl
+*.faiss
+
+# Dataset files if any
+*.csv
+*.tsv
+
+# Flask uploads, audio, or user-generated content
+static/audio/
+instance/
+
+# IDE/editor files
+.DS_Store
+.vscode/
+*.swp
+
+# System files
+Thumbs.db
+
+# Logs
+*.log
+
+# Anything you don't want in the repo but is local/temporary

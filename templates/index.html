@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial AI Assistant</title>
+     <!-- Enhanced MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                packages: {'[+]': ['ams', 'newcommand', 'configmacros']}
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            startup: {
+                ready: () => {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax is loaded and ready to go!');
+                }
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>💼 Financial AI Assistant</h1>
+                <div class="header-buttons">
+                    <button class="clear-btn" onclick="clearChat()" title="Clear Chat History">🗑️</button>
+                    <div class="settings-btn" onclick="toggleSettings()">⚙️</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settingsPanel">
+            <h3>Settings</h3>
+            <div class="setting-item">
+                <label>Language:</label>
+                <select id="languageSelect">
+                    <option value="english">🇺🇸 English</option>
+                    <option value="hindi">🇮🇳 हिंदी (Hindi)</option>
+                    <option value="marathi">🇮🇳 मराठी (Marathi)</option>
+                    <option value="tamil">🇮🇳 தமிழ் (Tamil)</option>
+                    <option value="bengali">🇮🇳 বাংলা (Bengali)</option>
+                    <option value="gujarati">🇮🇳 ગુજરાતી (Gujarati)</option>
+                    <option value="kannada">🇮🇳 ಕನ್ನಡ (Kannada)</option>
+                    <option value="malayalam">🇮🇳 മലയാളം (Malayalam)</option>
+                    <option value="punjabi">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</option>
+                    <option value="telugu">🇮🇳 తెలుగు (Telugu)</option>
+                    <option value="urdu">🇮🇳 اردو (Urdu)</option>
+                    <option value="odia">🇮🇳 ଓଡ଼ିଆ (Odia)</option>
+                    <option value="assamese">🇮🇳 অসমীয়া (Assamese)</option>
+                    <option value="nepali">🇳🇵 नेपाली (Nepali)</option>
+                    <option value="sindhi">🇮🇳 سنڌي (Sindhi)</option>
+                    <option value="kashmiri">🇮🇳 कॉशुर (Kashmiri)</option>
+                    <option value="sanskrit">🇮🇳 संस्कृतम् (Sanskrit)</option>
+                    <option value="maithili">🇮🇳 मैथिली (Maithili)</option>
+                    <option value="dogri">🇮🇳 डोगरी (Dogri)</option>
+                    <option value="manipuri">🇮🇳 মেইতেই (Manipuri)</option>
+                    <option value="bodo">🇮🇳 बर' (Bodo)</option>
+                    <option value="santhali">🇮🇳 ᱥᱟᱱᱛᱟᱲᱤ (Santhali)</option>
+                    <option value="konkani">🇮🇳 कोंकणी (Konkani)</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="autoPlayAudio"> 🔊 Auto-play responses
+                </label>
+            </div>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="continuousListening"> 🎤 Continuous listening
+                </label>
+            </div>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="autoSendRecognized" checked> 📤 Auto-send recognized text
+                </label>
+            </div>
+        </div>
+        
+        <!-- Speech Recognition Status -->
+        <div class="speech-status-bar" id="speechStatusBar" style="display: none;">
+            <div class="speech-indicator">
+                <span id="speechIndicator">🎤</span>
+                <span id="speechStatusText">Ready to listen</span>
+            </div>
+        </div>
+        
+        <!-- Chat Container -->
+        <div class="chat-container" id="chatContainer">
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <div class="bot-message">
+                        <div class="message-content">
+                            Welcome! I'm your "specialized Financial AI Assistant". I can help you with:
+                            <br><br>• Stocks, bonds, and investments
+                            <br>• Banking and loans
+                            <br>• Financial planning and budgeting
+                            <br>• Market trends and analysis
+                            <br>• Options pricing (Black-Scholes)
+                            <br>• Statistical analysis for market prediction
+                            <br><br><strong>Please ask me any "finance-related questions" using text or voice!</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Input Container -->
+        <div class="input-container">
+            <div class="input-row">
+                <button class="mic-btn" id="micBtn" onclick="toggleRecording()">
+                    🎤
+                </button>
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Ask anything about finance or use the microphone..."
+                    onkeypress="handleKeyPress(event)"
+                />
+                <button class="send-btn" onclick="sendMessage()">
+                    ➤
+                </button>
+            </div>
+        </div>
+        
+        <!-- Loading indicator -->
+        <div class="loading-indicator" id="loadingIndicator">
+            <div class="typing-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <span>AI is thinking...</span>
+        </div>
+        
+        <!-- Recording indicator -->
+        <div class="recording-indicator" id="recordingIndicator">
+            🎤 Listening... Speak now!
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

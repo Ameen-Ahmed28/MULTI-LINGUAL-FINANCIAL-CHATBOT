@@ -10,8 +10,8 @@ langchain
 langchain-community
 langchain-huggingface
 langchain-groq
-faiss-cpu==1.7.4
-sentence-transformers==2.2.2
+faiss-cpu
+sentence-transformers
 numpy==1.24.3
 ddgs
 nltk

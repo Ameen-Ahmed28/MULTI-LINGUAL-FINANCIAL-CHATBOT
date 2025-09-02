@@ -21,3 +21,5 @@ nltk
 pickle
 langgraph
 huggingface_hub
+flask
+gunicorn

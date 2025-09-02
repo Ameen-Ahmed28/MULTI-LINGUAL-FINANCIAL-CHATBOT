@@ -1,3 +1,4 @@
+python==3.9.23
 setuptools>=68.0
 wheel
 build

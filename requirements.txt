@@ -3,7 +3,7 @@ python-dotenv==1.0.0
 SpeechRecognition==3.10.0
 gtts==2.4.0
 pydub==0.25.1
-torch==2.1.0
+torch==2.5.1
 transformers==4.35.0
 datasets==2.14.5
 langchain

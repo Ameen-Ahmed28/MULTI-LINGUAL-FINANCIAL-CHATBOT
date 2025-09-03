@@ -21,3 +21,4 @@ nltk
 langgraph
 huggingface_hub
 gunicorn
+pyarrow
